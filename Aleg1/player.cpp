@@ -46,6 +46,9 @@ player::player(int sX, int sY)
 }
 player::player(int sX, int sY, MYCLASSES cl)
 {
+
+
+
 	if(cl == WIZARD)
 	{
 

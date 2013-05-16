@@ -21,6 +21,9 @@ extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_BITMAP *tiles;
 extern ALLEGRO_TIMER *timer;
 extern ALLEGRO_KEYBOARD *keyboard;
+
+extern ALLEGRO_TRANSFORM transform;
+
 //srand((int)time(NULL));
 
 //FUNCTIONS

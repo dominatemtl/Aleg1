@@ -25,6 +25,10 @@ int main(int argc, char **argv){
 		return 0;
 	}
 
+
+
+  
+
 //CREATE OBJECTS
 	scenemanager scene1;										//CREATE SCENE
 	player p1;													//CREATE PLAYER
@@ -36,7 +40,7 @@ int main(int argc, char **argv){
 	scene1.addPlayer(p3);										//ADD to SCENE
 	scene1.addPlayer(p4);										//ADD to SCENE 		
 
-	al_set_target_bitmap(al_get_backbuffer(display)); //?
+	//al_set_target_bitmap(al_get_backbuffer(display)); //?
 
 
 	event_queue = al_create_event_queue();			//EVENT QUEUE
@@ -59,6 +63,8 @@ int main(int argc, char **argv){
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	tile_map_create();
 	player* aP = NULL; // POINTER TO THE ACTIVE PLAYER
+
+	
 	al_start_timer(timer);
 	//GAME LOOP
 	while(1)
@@ -140,8 +146,8 @@ int main(int argc, char **argv){
 				//It the right click movement.
 
 				aP->sMove.shouldI = true;
-				aP->sMove.dest_x = ev.mouse.x;
-				aP->sMove.dest_y = ev.mouse.y;
+				aP->sMove.dest_x = ev.mouse.x + scroll_x;
+				aP->sMove.dest_y = ev.mouse.y + scroll_y;
 				aP->sMove.start_x = aP->getX();
 				aP->sMove.start_y = aP->getY();
 
@@ -171,8 +177,12 @@ int main(int argc, char **argv){
 			}
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
+
 				mouse = 1;
-				scene1.checkScene(ev.mouse.x, ev.mouse.y);
+				scene1.checkScene(ev.mouse.x + scroll_x, ev.mouse.y + scroll_y);
+
+
+
 				al_set_target_bitmap(al_get_backbuffer(display));
 
 			}
@@ -185,10 +195,22 @@ int main(int argc, char **argv){
 		{
            /* Left button scrolls. */
             if (mouse == 1) {
+			
+			/*
                 float x = ev.mouse.dx / zoom;
                 float y = ev.mouse.dy / zoom;
+			*/	
+				 float x = ev.mouse.dx;
+                float y = ev.mouse.dy;
                 scroll_x -= x * cos(rotate) + y * sin(rotate);
                 scroll_y -= y * cos(rotate) - x * sin(rotate);
+			/*
+
+				float x = ev.mouse.dx;
+				float y = ev.mouse.dy;
+				scroll_x -= x + y;
+				scroll_y -= y - x;
+			*/
             }
             /* Right button zooms/rotates. */
     /*        if (mouse == 2) {
@@ -204,6 +226,12 @@ int main(int argc, char **argv){
 	    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
 		{
             mouse = 0;
+        }
+
+
+        if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
+            al_acknowledge_resize(display);
+            redraw = true;
         }
 
 		if(redraw && al_is_event_queue_empty(event_queue)) {

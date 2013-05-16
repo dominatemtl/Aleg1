@@ -14,6 +14,8 @@ ALLEGRO_BITMAP *tiles = NULL;
 ALLEGRO_TIMER *timer = NULL;
 ALLEGRO_KEYBOARD *keyboard = NULL;
 
+ALLEGRO_TRANSFORM transform;
+
 bool InitializeGame()
 {
 	if(!al_init()) 

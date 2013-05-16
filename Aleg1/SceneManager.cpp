@@ -30,16 +30,44 @@ scenemanager::~scenemanager()
 }
 void scenemanager::drawScene()
 {
-
+	al_clear_to_color(al_map_rgb(0, 0, 0));
 	//DRAW TILEMAP
-	drawTilemap();
+//	drawTilemap();
 	tile_map_draw();
 	//DRAW PLAYERS
+
+
+  //  ALLEGRO_TRANSFORM transform;
+    float w, h;
+	
+
+    w = al_get_display_width(display);
+    h = al_get_display_height(display);
+ //
+ //   /* Initialize transformation. */
+    al_identity_transform(&transform);
+ //   /* Move to scroll position. */
+    al_translate_transform(&transform, -scroll_x, -scroll_y);
+   /* Rotate and scale around the center first. */
+  //  al_rotate_transform(&transform, rotate);
+  //  al_scale_transform(&transform, zoom, zoom);
+   /* Move scroll position to screen center. */
+//   al_translate_transform(&transform, w * 0.5, h * 0.5);
+    /* All subsequent drawing is transformed. */
+    al_use_transform(&transform);
+
+ //   al_clear_to_color(al_map_rgb(0, 0, 0));
+
+
+
+
 	for(int i =0; i < pIndex ; i++)
 	{
 		if(pArray[i]->getPlayerClass() == WIZARD)
 		{
 			al_draw_bitmap_region(pArray[i]->getPlayerBitmap(),0, 0, 60, 96, pArray[i]->getX(), pArray[i]->getY(),0);
+		
+			
 		}
 		else
 		{
@@ -47,9 +75,40 @@ void scenemanager::drawScene()
 		}
 	}
 
+	al_identity_transform(&transform);
+    al_use_transform(&transform);
+
 	//DRAW Debug information
 	drawDebugUI();
 
+}
+void scenemanager::drawDebugUI()
+{
+	//FPS
+	double game_time = al_get_time();
+	if(game_time - old_time >= 1.0) 
+	{
+		fps = frames_done / (game_time - old_time);
+
+		frames_done = 0;
+		old_time = game_time;
+	}
+	frames_done++;
+
+	al_draw_filled_rectangle(0, 0, SCREEN_W, 72, al_map_rgb(0,0,0));
+
+	//DRAW
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 5, ALLEGRO_ALIGN_RIGHT,"%4.f",fps);
+	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 5, ALLEGRO_ALIGN_RIGHT, "FPS");
+
+	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 18, ALLEGRO_ALIGN_RIGHT, "Selected player");
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 18, ALLEGRO_ALIGN_RIGHT,"%i",aP_index);
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 31, ALLEGRO_ALIGN_RIGHT, "X: %i Y: %i",pArray[aP_index]->getX(),pArray[aP_index]->getY());
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
 }
 void scenemanager::drawTilemap()
 {
@@ -150,33 +209,7 @@ void scenemanager::checkScene(int cX, int cY) //CHECK TO SEE IF USER CLICKED ON 
 	}
 
 }
-void scenemanager::drawDebugUI()
-{
-	//FPS
-	double game_time = al_get_time();
-	if(game_time - old_time >= 1.0) 
-	{
-		fps = frames_done / (game_time - old_time);
 
-		frames_done = 0;
-		old_time = game_time;
-	}
-	frames_done++;
-
-
-	//DRAW
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 5, ALLEGRO_ALIGN_RIGHT,"%4.f",fps);
-	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 5, ALLEGRO_ALIGN_RIGHT, "FPS");
-
-	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 18, ALLEGRO_ALIGN_RIGHT, "Selected player");
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 18, ALLEGRO_ALIGN_RIGHT,"%i",aP_index);
-
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 31, ALLEGRO_ALIGN_RIGHT, "X: %i Y: %i",pArray[aP_index]->getX(),pArray[aP_index]->getY());
-
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
-
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
-}
 void scenemanager::addEntity(entity& e)
 {
 
@@ -250,7 +283,7 @@ void scenemanager::moveActivePlayer()
 
 		}
 	}
-	if(keys[KEY_DOWN] && pArray[aP_index]->getY() <= SCREEN_H - 32)
+	if(keys[KEY_DOWN] && pArray[aP_index]->getY() <= 3200 - 32)
 	{
 		pArray[aP_index]->move(DOWN);
 		pArray[aP_index]->sMove.shouldI = false;
@@ -273,7 +306,7 @@ void scenemanager::moveActivePlayer()
 		}
 
 	}
-	if(keys[KEY_RIGHT] && pArray[aP_index]->getX() <= SCREEN_W - 32)
+	if(keys[KEY_RIGHT] && pArray[aP_index]->getX() <= 3200 - 32)
 	{
 		pArray[aP_index]->move(RIGHT);
 		pArray[aP_index]->sMove.shouldI = false;
