@@ -65,31 +65,52 @@ void tile_map_create(void) {
     }
  
     /* Center of map. */
-    scroll_x = 100 * 32 / 2;
-    scroll_y = 100 * 32 / 2;
+	
+
+	scroll_x = 0;
+	scroll_y = 0;
+
+
+
+
+//    scroll_x = 100 * 32 / 2;
+//    scroll_y = 100 * 32 / 2;
+	
 }
  
 /* Draws the complete map. */
 void tile_map_draw(void) {
+
 	int x,y;
-    
+ 	/*
     float w, h;
+
 	
+	if(scroll_x < 0)
+		scroll_x = 0;
+	else if(scroll_x > 2500)
+		scroll_x = 2500;
+	
+	if(scroll_y < 0)
+		scroll_y = 0;
+
 
     w = al_get_display_width(display);
     h = al_get_display_height(display);
- 
+ */
     /* Initialize transformation. */
-    al_identity_transform(&transform);
+ //   al_identity_transform(&transform);
     /* Move to scroll position. */
-    al_translate_transform(&transform, -scroll_x, -scroll_y);
+ //   al_translate_transform(&transform, -scroll_x, -scroll_y);
     /* Rotate and scale around the center first. */
   //  al_rotate_transform(&transform, rotate);
  //   al_scale_transform(&transform, zoom, zoom);
     /* Move scroll position to screen center. */
-   // al_translate_transform(&transform, w * 0.5, h * 0.5);
+ //   al_translate_transform(&transform, w, h );
     /* All subsequent drawing is transformed. */
-    al_use_transform(&transform);
+ //   al_use_transform(&transform);
+
+
  
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -108,8 +129,8 @@ void tile_map_draw(void) {
     al_hold_bitmap_drawing(0);
 
  
-    al_identity_transform(&transform);
-    al_use_transform(&transform);
+ //   al_identity_transform(&transform);
+  //  al_use_transform(&transform);
 }
 
 //WIP

@@ -146,8 +146,8 @@ int main(int argc, char **argv){
 				//It the right click movement.
 
 				aP->sMove.shouldI = true;
-				aP->sMove.dest_x = ev.mouse.x + scroll_x;
-				aP->sMove.dest_y = ev.mouse.y + scroll_y;
+				aP->sMove.dest_x = (ev.mouse.x + scroll_x) / zoom;
+				aP->sMove.dest_y = (ev.mouse.y + scroll_y) / zoom;
 				aP->sMove.start_x = aP->getX();
 				aP->sMove.start_y = aP->getY();
 
@@ -178,9 +178,15 @@ int main(int argc, char **argv){
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
 
-				mouse = 1;
-				scene1.checkScene(ev.mouse.x + scroll_x, ev.mouse.y + scroll_y);
+				int mX, mY;
 
+				mX = (ev.mouse.x + scroll_x) / zoom;
+				mY = (ev.mouse.y + scroll_y) / zoom;
+
+
+				mouse = 1;
+			//	scene1.checkScene(ev.mouse.x + scroll_x, ev.mouse.y + scroll_y);
+				scene1.checkScene(mX, mY);
 
 
 				al_set_target_bitmap(al_get_backbuffer(display));
@@ -200,8 +206,11 @@ int main(int argc, char **argv){
                 float x = ev.mouse.dx / zoom;
                 float y = ev.mouse.dy / zoom;
 			*/	
-				 float x = ev.mouse.dx;
-                float y = ev.mouse.dy;
+
+
+
+				float x = ev.mouse.dx / zoom;
+                float y = ev.mouse.dy / zoom;
                 scroll_x -= x * cos(rotate) + y * sin(rotate);
                 scroll_y -= y * cos(rotate) - x * sin(rotate);
 			/*
