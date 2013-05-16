@@ -1,72 +1,31 @@
 
 #include "StdAfx.h"
-#include "globals.h"
 #include "entity.h"
 #include "player.h"
 #include "SceneManager.h"
 
-
-//ALLEGRO STRUCTS
-ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-ALLEGRO_DISPLAY *display = NULL;
-ALLEGRO_TIMER *timer = NULL;
-ALLEGRO_KEYBOARD *keyboard = NULL;
-ALLEGRO_FONT *font_oj18 = NULL; //Pointer to font
-
-
 bool redraw = true;
+int mouse;
 
 int main(int argc, char **argv){
 
 	//INITIALIZTIONS
-
-	if(!al_init()) 
+	if(!InitializeGame())
 	{
-		fprintf(stderr, "failed to initialize allegro!\n");
-		return 0;
+		fprintf(stderr, "failed to install mouse!\n");
+		return false;
 	}
 
-	if(!al_init_image_addon()) 
-	{
+//Move this font and drawing
+	ALLEGRO_FONT *font_oj18 = NULL; //Pointer to font
 
-		return 0;
-	}
-	al_init_font_addon(); //Initialize Font
-	if(!al_init_ttf_addon()) 
-	{
-		fprintf(stderr, "failed to initialize allegro ttf addon!\n");
-		return 0;
-	}
-	if(!al_install_keyboard())
-	{
-		fprintf(stderr, "failed to install keyboard!\n");
-		return 0;
-	}
 	font_oj18 = al_load_ttf_font("orangejuice.ttf",50,0);
 	if(!font_oj18) {
 		fprintf(stderr, "failed to create font!\n");
 		return 0;
 	}
 
-	if(!al_install_mouse())
-	{
-		fprintf(stderr, "failed to install mouse!\n");
-		return 0;
-	}
-	timer = al_create_timer(1.0 / FPS);						//TIMER
-	if(!timer) 
-	{
-		fprintf(stderr, "failed to create timer!\n");
-		return -1;
-	}
-	display = al_create_display(SCREEN_W, SCREEN_H);		//DISPLAY
-	if(!display) {
-		fprintf(stderr, "failed to create display!\n");
-		al_destroy_timer(timer);
-		return -1;
-	}
-
-
+//CREATE OBJECTS
 	scenemanager scene1;										//CREATE SCENE
 	player p1;													//CREATE PLAYER
 	player p2(300, 300);										//CREATE PLAYER					
@@ -97,11 +56,10 @@ int main(int argc, char **argv){
 
 	//	al_clear_to_color(al_map_rgb(0,0,0));
 	//	al_flip_display();
-
-
+	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
+	tile_map_create();
 	player* aP = NULL; // POINTER TO THE ACTIVE PLAYER
 	al_start_timer(timer);
-
 	//GAME LOOP
 	while(1)
 	{
@@ -171,11 +129,15 @@ int main(int argc, char **argv){
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
+	
 		else if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) // RIGHT CLICK ---- MOVE
 		{
 
 			if(ev.mouse.button == RIGHT_CLICK)
 			{
+				mouse = 2;
+				//Move this logic
+				//It the right click movement.
 
 				aP->sMove.shouldI = true;
 				aP->sMove.dest_x = ev.mouse.x;
@@ -209,21 +171,52 @@ int main(int argc, char **argv){
 			}
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
+				mouse = 1;
 				scene1.checkScene(ev.mouse.x, ev.mouse.y);
 				al_set_target_bitmap(al_get_backbuffer(display));
-			}
 
+			}
+			
+
+			//ALL of this
+		}
+	
+		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)
+		{
+           /* Left button scrolls. */
+            if (mouse == 1) {
+                float x = ev.mouse.dx / zoom;
+                float y = ev.mouse.dy / zoom;
+                scroll_x -= x * cos(rotate) + y * sin(rotate);
+                scroll_y -= y * cos(rotate) - x * sin(rotate);
+            }
+            /* Right button zooms/rotates. */
+    /*        if (mouse == 2) {
+                rotate += ev.mouse.dx * 0.01;
+                zoom += ev.mouse.dy * 0.01 * zoom;
+            }
+	*/
+            zoom += ev.mouse.dz * 0.1 * zoom;
+            if (zoom < 0.21) zoom = 0.21;
+            if (zoom > 5) zoom = 5;
 
 		}
+	    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
+		{
+            mouse = 0;
+        }
 
 		if(redraw && al_is_event_queue_empty(event_queue)) {
 
 			redraw = false;
+
 			al_clear_to_color(al_map_rgb(0,0,0));
 
+
 			scene1.drawScene();
-	
+
 			al_draw_text(font_oj18,al_map_rgb(255,255,255),SCREEN_W /2, 10, ALLEGRO_ALIGN_CENTRE, "BBEG GAME - RGL");
+
 			al_flip_display();
 		}
 	}

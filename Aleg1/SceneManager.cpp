@@ -33,7 +33,7 @@ void scenemanager::drawScene()
 
 	//DRAW TILEMAP
 	drawTilemap();
-
+	tile_map_draw();
 	//DRAW PLAYERS
 	for(int i =0; i < pIndex ; i++)
 	{
@@ -53,7 +53,7 @@ void scenemanager::drawScene()
 }
 void scenemanager::drawTilemap()
 {
-	al_draw_bitmap(tmpBackground,-87,81,0);
+	//al_draw_bitmap(tmpBackground,-87,81,0);
 }
 void scenemanager::sceneMovement()
 {
@@ -172,9 +172,10 @@ void scenemanager::drawDebugUI()
 	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 18, ALLEGRO_ALIGN_RIGHT,"%i",aP_index);
 
 	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 31, ALLEGRO_ALIGN_RIGHT, "X: %i Y: %i",pArray[aP_index]->getX(),pArray[aP_index]->getY());
+
 	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
 
-
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
 }
 void scenemanager::addEntity(entity& e)
 {
@@ -218,14 +219,14 @@ void scenemanager::setActivePlayer(int i)
 		{
 			//
 			fprintf(stderr, "I'm ad WIZARD HARRY!",i);
-			pArray[aP_index]->changeColor(255,255,0);
+			pArray[aP_index]->changeColor(0,0,0);
 			aP_index = i;
 		}
 		else
 		{	
 			fprintf(stderr, "setActivePlayer: %i\n",i);
 			if(pArray[aP_index]->getPlayerClass() == NONE)
-				pArray[aP_index]->changeColor(255,255,0);
+				pArray[aP_index]->changeColor(0,0,0);
 
 			pArray[i]->changeColor(255,0,255);
 			aP_index = i;
