@@ -13,7 +13,6 @@ ALLEGRO_DISPLAY *display = NULL;
 ALLEGRO_BITMAP *tiles = NULL;
 ALLEGRO_TIMER *timer = NULL;
 ALLEGRO_KEYBOARD *keyboard = NULL;
-
 ALLEGRO_TRANSFORM transform;
 
 bool InitializeGame()
@@ -60,5 +59,8 @@ bool InitializeGame()
 		return false;
 	}
 	
+	//SEED RANDOM
+	srand (time(NULL));
+
 	return true;
 }

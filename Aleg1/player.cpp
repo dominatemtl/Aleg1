@@ -55,7 +55,7 @@ player::player(int sX, int sY, MYCLASSES cl)
 		x = sX;
 		y = sY;
 
-		speed = 2;
+		speed = 4;
 		size = 92;
 		sMove.shouldI = false;
 		sMove.dest_x = 0;

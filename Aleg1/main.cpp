@@ -40,9 +40,6 @@ int main(int argc, char **argv){
 	scene1.addPlayer(p3);										//ADD to SCENE
 	scene1.addPlayer(p4);										//ADD to SCENE 		
 
-	//al_set_target_bitmap(al_get_backbuffer(display)); //?
-
-
 	event_queue = al_create_event_queue();			//EVENT QUEUE
 	if(!event_queue) {
 		fprintf(stderr, "failed to create event_queue!\n");
@@ -58,8 +55,6 @@ int main(int argc, char **argv){
 	al_register_event_source(event_queue, al_get_display_event_source(display));
 	al_register_event_source(event_queue, al_get_timer_event_source(timer));
 
-	//	al_clear_to_color(al_map_rgb(0,0,0));
-	//	al_flip_display();
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	tile_map_create();
 	player* aP = NULL; // POINTER TO THE ACTIVE PLAYER
@@ -146,8 +141,8 @@ int main(int argc, char **argv){
 				//It the right click movement.
 
 				aP->sMove.shouldI = true;
-				aP->sMove.dest_x = (ev.mouse.x + scroll_x) / zoom;
-				aP->sMove.dest_y = (ev.mouse.y + scroll_y) / zoom;
+				aP->sMove.dest_x = (ev.mouse.x / zoom) + scroll_x;
+				aP->sMove.dest_y = (ev.mouse.y / zoom) + scroll_y;
 				aP->sMove.start_x = aP->getX();
 				aP->sMove.start_y = aP->getY();
 
@@ -180,15 +175,13 @@ int main(int argc, char **argv){
 
 				int mX, mY;
 
-				mX = (ev.mouse.x + scroll_x) / zoom;
-				mY = (ev.mouse.y + scroll_y) / zoom;
-
+				mX = (ev.mouse.x / zoom) + scroll_x;
+				mY = (ev.mouse.y / zoom) + scroll_y;
 
 				mouse = 1;
-			//	scene1.checkScene(ev.mouse.x + scroll_x, ev.mouse.y + scroll_y);
+
+				//Check for clicked on elements
 				scene1.checkScene(mX, mY);
-
-
 				al_set_target_bitmap(al_get_backbuffer(display));
 
 			}
@@ -202,34 +195,18 @@ int main(int argc, char **argv){
            /* Left button scrolls. */
             if (mouse == 1) {
 			
-			/*
-                float x = ev.mouse.dx / zoom;
-                float y = ev.mouse.dy / zoom;
-			*/	
-
-
 
 				float x = ev.mouse.dx / zoom;
                 float y = ev.mouse.dy / zoom;
                 scroll_x -= x * cos(rotate) + y * sin(rotate);
                 scroll_y -= y * cos(rotate) - x * sin(rotate);
-			/*
 
-				float x = ev.mouse.dx;
-				float y = ev.mouse.dy;
-				scroll_x -= x + y;
-				scroll_y -= y - x;
-			*/
             }
-            /* Right button zooms/rotates. */
-    /*        if (mouse == 2) {
-                rotate += ev.mouse.dx * 0.01;
-                zoom += ev.mouse.dy * 0.01 * zoom;
-            }
-	*/
-            zoom += ev.mouse.dz * 0.1 * zoom;
-            if (zoom < 0.21) zoom = 0.21;
-            if (zoom > 5) zoom = 5;
+
+			//Zoom translation & safeguards
+			zoom += ev.mouse.dz * 0.1;
+            if (zoom < 0.30) zoom = 0.30;
+            if (zoom > 2) zoom = 2;
 
 		}
 	    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
@@ -250,9 +227,10 @@ int main(int argc, char **argv){
 			al_clear_to_color(al_map_rgb(0,0,0));
 
 
+			
 			scene1.drawScene();
 
-			al_draw_text(font_oj18,al_map_rgb(255,255,255),SCREEN_W /2, 10, ALLEGRO_ALIGN_CENTRE, "BBEG GAME - RGL");
+			al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
 
 			al_flip_display();
 		}

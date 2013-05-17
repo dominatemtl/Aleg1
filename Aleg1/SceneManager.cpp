@@ -31,37 +31,21 @@ scenemanager::~scenemanager()
 void scenemanager::drawScene()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
-	//DRAW TILEMAP
-//	drawTilemap();
 
-	//DRAW PLAYERS
-
-
-  //  ALLEGRO_TRANSFORM transform;
-    float w, h;
 
 	if(scroll_x < 0)
 		scroll_x = 0;
-	 if((scroll_x + SCREEN_W) / zoom > 3200)
-	//	scroll_x = 3200 * zoom;
-	
-	if(scroll_y < 0)
-		scroll_y = 0;
+
+/*	if((scroll_x * zoom) + SCREEN_W > 3200)
+		scroll_x = scroll_x / zoom + SCREEN_W;
+*/
+	if(scroll_y < -72)
+		scroll_y = -72;
 	
 
-  //  w = al_get_display_width(display);
-  //  h = al_get_display_height(display);
- //
- //   /* Initialize transformation. */
     al_identity_transform(&transform);
- //   /* Move to scroll position. */
     al_translate_transform(&transform, -scroll_x, -scroll_y);
-   /* Rotate and scale around the center first. */
-  //  al_rotate_transform(&transform, rotate);
     al_scale_transform(&transform, zoom, zoom);
-   /* Move scroll position to screen center. */
-  // al_translate_transform(&transform, w , h);
-    /* All subsequent drawing is transformed. */
     al_use_transform(&transform);
 
 
