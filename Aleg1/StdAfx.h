@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <fstream>
+#include <vector>
 
 // ALLEGRO INCLUDES
 #include <allegro5/allegro.h>

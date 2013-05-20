@@ -22,13 +22,17 @@ private:
 	ALLEGRO_FONT *font_arial12;
 	ALLEGRO_BITMAP *tmpBackground;
 
-	
+	player* pArray[3]; //POINTERS TO PLAYERS
+	entity* eArray[32];//POINTS TO ENTITIES
+
+	std::vector<player*> veArray;
 
 
 protected:
 
-	player* pArray[3]; //POINTERS TO PLAYERS
-	entity* eArray[32];//POINTS TO ENTITIES
+
+
+	
 
 public:
 
@@ -38,7 +42,6 @@ public:
 
 	void drawScene();
 	void drawDebugUI();
-	void drawTilemap();
 
 	void addPlayer(player& p);
 	player* getPlayer();

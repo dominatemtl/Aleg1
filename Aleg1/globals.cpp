@@ -2,8 +2,9 @@
 
 
 const int FPS = 60;
-const int SCREEN_W = 680;
-const int SCREEN_H = 680;
+int SCREEN_W = 680;
+int SCREEN_H = 680;
+
 
 bool keys[] = {false, false, false, false, false};
 
@@ -14,6 +15,7 @@ ALLEGRO_BITMAP *tiles = NULL;
 ALLEGRO_TIMER *timer = NULL;
 ALLEGRO_KEYBOARD *keyboard = NULL;
 ALLEGRO_TRANSFORM transform;
+ALLEGRO_BITMAP *stone = NULL;
 
 bool InitializeGame()
 {
@@ -29,7 +31,7 @@ bool InitializeGame()
 		return false;
 	}
 	al_set_new_display_flags(ALLEGRO_RESIZABLE);
-	display = al_create_display(SCREEN_W, SCREEN_H);		//DISPLAY
+	display = al_create_display(680, 680);		//DISPLAY
 	if(!display) {
 		fprintf(stderr, "failed to create display!\n");
 		al_destroy_timer(timer);
@@ -63,4 +65,15 @@ bool InitializeGame()
 	srand (time(NULL));
 
 	return true;
+}
+
+void CleanUp()
+{
+
+	al_destroy_bitmap(tiles);
+	al_destroy_bitmap(stone);
+	al_destroy_timer(timer);
+	al_destroy_display(display);
+	al_destroy_event_queue(event_queue);
+
 }

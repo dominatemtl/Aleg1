@@ -52,7 +52,7 @@ player::player(int sX, int sY, MYCLASSES cl)
 	if(cl == WIZARD)
 	{
 
-		x = sX;
+		x = sX + SCREEN_W;
 		y = sY;
 
 		speed = 4;

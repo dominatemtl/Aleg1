@@ -3,9 +3,10 @@
 #include "StdAfx.h"
 
 extern const int FPS;
-extern const int SCREEN_W;
-extern const int SCREEN_H;
-
+extern int SCREEN_W;
+extern int SCREEN_H;
+extern int SCREEN_W_CENTER;
+extern int SCREEN_H_CENTER;
 //GLOBAL ENUMERATORS
 
 extern enum MYKEYS{KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT,KEY_SPACE};
@@ -22,11 +23,13 @@ extern ALLEGRO_BITMAP *tiles;
 extern ALLEGRO_TIMER *timer;
 extern ALLEGRO_KEYBOARD *keyboard;
 
+extern ALLEGRO_BITMAP *stone;
 extern ALLEGRO_TRANSFORM transform;
 
 //srand((int)time(NULL));
 
 //FUNCTIONS
 bool InitializeGame();
+void CleanUp();
 
 #endif

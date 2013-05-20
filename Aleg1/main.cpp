@@ -34,7 +34,7 @@ int main(int argc, char **argv){
 	player p1;													//CREATE PLAYER
 	player p2(300, 300);										//CREATE PLAYER					
 	player p3(332, 332);										//CREATE PLAYER
-	player p4(52, 52, WIZARD);									//CREATE PLAYER
+	player p4(600, 600, WIZARD);									//CREATE PLAYER
 	scene1.addPlayer(p1);										//ADD to SCENE
 	scene1.addPlayer(p2);										//ADD to SCENE
 	scene1.addPlayer(p3);										//ADD to SCENE
@@ -172,6 +172,8 @@ int main(int argc, char **argv){
 			}
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
+				//FOR DEBUG
+			//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
 
 				int mX, mY;
 
@@ -205,7 +207,7 @@ int main(int argc, char **argv){
 
 			//Zoom translation & safeguards
 			zoom += ev.mouse.dz * 0.1;
-            if (zoom < 0.30) zoom = 0.30;
+            if (zoom < 0.5) zoom = 0.5;
             if (zoom > 2) zoom = 2;
 
 		}
@@ -216,7 +218,12 @@ int main(int argc, char **argv){
 
 
         if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
+
             al_acknowledge_resize(display);
+			SCREEN_W = al_get_display_width(display);
+			SCREEN_H = al_get_display_height(display);
+		
+
             redraw = true;
         }
 
@@ -230,15 +237,14 @@ int main(int argc, char **argv){
 			
 			scene1.drawScene();
 
-			al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
+		//	al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
 
 			al_flip_display();
 		}
 	}
 
-	al_destroy_timer(timer);
-	al_destroy_display(display);
-	al_destroy_event_queue(event_queue);
+	//clean up 
+	CleanUp();
 	al_destroy_font(font_oj18);
 
 

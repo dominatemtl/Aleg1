@@ -27,32 +27,35 @@ scenemanager::~scenemanager()
 {
 	al_destroy_font(font_arial12);
 	al_destroy_bitmap(tmpBackground);
+
+	//CLEAN UP Vector objects
+//	size_t sz = veArray.size();
+//	for (size_t i = 0; i < sz; ++i)
+//		delete veArray[i];
 }
 void scenemanager::drawScene()
 {
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
-
+	//CAMERA CONSTRAINTS
 	if(scroll_x < 0)
 		scroll_x = 0;
-
-/*	if((scroll_x * zoom) + SCREEN_W > 3200)
-		scroll_x = scroll_x / zoom + SCREEN_W;
-*/
-	if(scroll_y < -72)
-		scroll_y = -72;
+	if(scroll_x + (SCREEN_W / zoom)  > 3200 )
+		scroll_x = 3200 - (SCREEN_W / zoom);
+	if(scroll_y < -72 / zoom)
+		scroll_y = -72 / zoom;
+	if(scroll_y + (SCREEN_H / zoom)  > 3200 )
+		scroll_y = 3200 - (SCREEN_H / zoom);
 	
-
+	//CAMERA SCALE AND TRANSLATE
     al_identity_transform(&transform);
     al_translate_transform(&transform, -scroll_x, -scroll_y);
     al_scale_transform(&transform, zoom, zoom);
     al_use_transform(&transform);
 
-
-
-
+	//DRAW MAP
 	tile_map_draw();
-
+	
 	for(int i =0; i < pIndex ; i++)
 	{
 		if(pArray[i]->getPlayerClass() == WIZARD)
@@ -67,8 +70,20 @@ void scenemanager::drawScene()
 		}
 	}
 
+//VECTOR TESTING
+	for(int i =0; i < veArray.size() ; i++)
+	{
+		if(veArray[i]->getPlayerClass() == WIZARD)
+		{
+			al_draw_bitmap_region(veArray[i]->getPlayerBitmap(),0, 0, 60, 96, veArray[i]->getX() + 100, veArray[i]->getY() + 100,0);
+	
+		}
+
+	}
+	
 	al_identity_transform(&transform);
     al_use_transform(&transform);
+
 
 	//DRAW Debug information
 	drawDebugUI();
@@ -90,22 +105,26 @@ void scenemanager::drawDebugUI()
 	al_draw_filled_rectangle(0, 0, SCREEN_W, 72, al_map_rgb(0,0,0));
 
 	//DRAW
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 5, ALLEGRO_ALIGN_RIGHT,"%4.f",fps);
-	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 5, ALLEGRO_ALIGN_RIGHT, "FPS");
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),460 + (SCREEN_W - 680), 5, ALLEGRO_ALIGN_CENTER, "SCREEN_W:%i",SCREEN_W);
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),460 + (SCREEN_W - 680), 18, ALLEGRO_ALIGN_CENTER, "SCREEN_H:%i",SCREEN_H);
 
-	al_draw_text(font_arial12,al_map_rgb(255,255,255),650, 18, ALLEGRO_ALIGN_RIGHT, "Selected player");
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 18, ALLEGRO_ALIGN_RIGHT,"%i",aP_index);
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),460 + (SCREEN_W - 680), 31, ALLEGRO_ALIGN_CENTER, "Scroll_x:%i",(int)scroll_x);
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),460 + (SCREEN_W - 680), 43, ALLEGRO_ALIGN_CENTER, "Scroll_y:%i",(int)scroll_y);
 
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 31, ALLEGRO_ALIGN_RIGHT, "X: %i Y: %i",pArray[aP_index]->getX(),pArray[aP_index]->getY());
 
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 5, ALLEGRO_ALIGN_RIGHT,"%4.f",fps);
+	al_draw_text(font_arial12,al_map_rgb(255,255,255),650 + (SCREEN_W - 680), 5, ALLEGRO_ALIGN_RIGHT, "FPS");
 
-	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670, 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
+	al_draw_text(font_arial12,al_map_rgb(255,255,255),650 + (SCREEN_W - 680), 18, ALLEGRO_ALIGN_RIGHT, "Selected player");
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 18, ALLEGRO_ALIGN_RIGHT,"%i",aP_index);
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 31, ALLEGRO_ALIGN_RIGHT, "X: %i Y: %i",pArray[aP_index]->getX(),pArray[aP_index]->getY());
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
+
+	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
 }
-void scenemanager::drawTilemap()
-{
-	//al_draw_bitmap(tmpBackground,-87,81,0);
-}
+
 void scenemanager::sceneMovement()
 {
 	//Itterate through all players moving them if needed.
@@ -176,6 +195,8 @@ void scenemanager::addPlayer(player& p)
 		setActivePlayer(0);
 
 	pIndex++;
+
+	veArray.push_back(&p);
 
 }
 player* scenemanager::getPlayer()
