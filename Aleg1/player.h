@@ -12,6 +12,8 @@ private:
 protected:
 
 	MYCLASSES playerClass;
+	std::vector<entity*> close_to_player;
+
 
 public:
 
@@ -19,10 +21,11 @@ public:
 	player(int,int);
 	player(int,int, MYCLASSES cl);
 	~player();
-	ALLEGRO_BITMAP* getPlayerBitmap();
-
 	void changeColor(int,int,int);
 	int getPlayerClass(){return playerClass;};
+	void setCloseToPlayer(entity& e);
+	std::vector<entity*>* getCloseToPlayer();
+
 
 };
 

@@ -25,7 +25,8 @@ private:
 	player* pArray[3]; //POINTERS TO PLAYERS
 	entity* eArray[32];//POINTS TO ENTITIES
 
-	std::vector<player*> veArray;
+	std::vector<player*> vpArray;
+	std::vector<entity*> veArray;
 
 
 protected:
@@ -46,14 +47,18 @@ public:
 	void addPlayer(player& p);
 	player* getPlayer();
 
-	void addEntity(entity& e);
+	void addEntity();
 	void checkScene(int cX,int xY);
 	void sceneMovement();
+
+	//COLLISION
 	bool checkCollision(int);
+	void updateNearbyObjects(int index);
+	bool bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h);
 
 	void setActivePlayer(int);
 	void moveActivePlayer();
-	bool bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h);
+
 
 
 

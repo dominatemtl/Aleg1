@@ -76,11 +76,6 @@ player::~player()
 //	al_destroy_bitmap(pBitmapEntity);
 }
 
-
-ALLEGRO_BITMAP* player::getPlayerBitmap()
-{
-	return pBitmapEntity;
-}
 void player::changeColor(int r, int g, int b)
 {
 
@@ -90,4 +85,24 @@ void player::changeColor(int r, int g, int b)
 	
 
 
+}
+
+void player::setCloseToPlayer(entity& e)
+{
+
+	if(std::find(close_to_player.begin(), close_to_player.end(), &e) != close_to_player.end())
+	{
+		fprintf(stderr,"entity already in array\n");
+	}
+	else
+	{
+		close_to_player.push_back(&e);
+	}
+
+}
+
+std::vector<entity*>* player::getCloseToPlayer()
+{
+
+	return &close_to_player;
 }

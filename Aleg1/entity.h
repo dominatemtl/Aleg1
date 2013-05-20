@@ -35,12 +35,14 @@ public:
 
 
 	entity();
+	entity(int,int,int,int);
 	~entity();
 	int getX(){return x;};
 	int getY(){return y;};
 	void move(MYMOVEMENT direction);
 	void moveX(int nX){ x = nX; };
 	void moveY(int nY){ x = nY; };
+	ALLEGRO_BITMAP* getBitmap();
 	int getSpeed(){return speed;};
 	int getSize(){return size;};
 	bool getColisionStatus(){return colided;};

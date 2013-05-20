@@ -29,9 +29,9 @@ scenemanager::~scenemanager()
 	al_destroy_bitmap(tmpBackground);
 
 	//CLEAN UP Vector objects
-//	size_t sz = veArray.size();
-//	for (size_t i = 0; i < sz; ++i)
-//		delete veArray[i];
+	size_t sz = veArray.size();
+	for (size_t i = 0; i < sz; ++i)
+		delete veArray[i];
 }
 void scenemanager::drawScene()
 {
@@ -60,24 +60,22 @@ void scenemanager::drawScene()
 	{
 		if(pArray[i]->getPlayerClass() == WIZARD)
 		{
-			al_draw_bitmap_region(pArray[i]->getPlayerBitmap(),0, 0, 60, 96, pArray[i]->getX(), pArray[i]->getY(),0);
+			al_draw_bitmap_region(pArray[i]->getBitmap(),0, 0, 60, 96, pArray[i]->getX(), pArray[i]->getY(),0);
 		
 			
 		}
 		else
 		{
-			al_draw_bitmap(pArray[i]->getPlayerBitmap(), pArray[i]->getX(), pArray[i]->getY(), 0);
+			al_draw_bitmap(pArray[i]->getBitmap(), pArray[i]->getX(), pArray[i]->getY(), 0);
 		}
 	}
 
 //VECTOR TESTING
-	for(int i =0; i < veArray.size() ; i++)
-	{
-		if(veArray[i]->getPlayerClass() == WIZARD)
-		{
-			al_draw_bitmap_region(veArray[i]->getPlayerBitmap(),0, 0, 60, 96, veArray[i]->getX() + 100, veArray[i]->getY() + 100,0);
+
 	
-		}
+	for(int i = 0; i < veArray.size() ; i++)
+	{
+			al_draw_bitmap(veArray[i]->getBitmap(), veArray[i]->getX(), veArray[i]->getY(), 0);
 
 	}
 	
@@ -132,6 +130,8 @@ void scenemanager::sceneMovement()
 	{
 		if(pArray[i]->sMove.shouldI) //See if the object should move
 		{
+
+			//REWRITE TO CALL checkCollision once
 
 			fprintf(stderr, "MOVED: X:%i Y:%i\n",pArray[i]->getX(),pArray[i]->getY());
 			if(pArray[i]->getX() == pArray[i]->sMove.dest_x && pArray[i]->getY() == pArray[i]->sMove.dest_y) //Its there
@@ -196,7 +196,7 @@ void scenemanager::addPlayer(player& p)
 
 	pIndex++;
 
-	veArray.push_back(&p);
+	vpArray.push_back(&p);
 
 }
 player* scenemanager::getPlayer()
@@ -223,17 +223,28 @@ void scenemanager::checkScene(int cX, int cY) //CHECK TO SEE IF USER CLICKED ON 
 
 }
 
-void scenemanager::addEntity(entity& e)
+void scenemanager::addEntity()
 {
+	//Generate random coordinates
+	int rX = rand() % 3100;
+	int rY = rand() % 3100;
 
+	//Dynamically create new entity
+
+	veArray.push_back(new entity(rX,rY,0,32));
 
 }
 bool scenemanager::checkCollision(int index)
 {
+
+	//	Terrible spot for this
+	updateNearbyObjects(index);
+
 	//check x,y object against other members of the array
 	fprintf(stderr, "CHECK: %i\n",index);
 	for(int i =0; i < pIndex ; i++) 
 	{
+
 
 		fprintf(stderr, "--AGAINST: %i\n",i);
 		if(index == i)
@@ -252,6 +263,53 @@ bool scenemanager::checkCollision(int index)
 		}
 
 	}
+
+	// Check players against nearby entities
+
+	std::vector<entity*>* pCloseEntity = pArray[index]->getCloseToPlayer();
+
+	for(int i =0; i < pCloseEntity->size() ; i++) 
+	{
+
+		fprintf(stderr, "--AGAINST: %i\n",i);
+
+	
+		if(bounding_box_collision(pArray[index]->getX(),pArray[index]->getY(),pArray[index]->getSize(),pArray[index]->getSize(),
+			(*pCloseEntity)[i]->getX(),(*pCloseEntity)[i]->getY(),(*pCloseEntity)[i]->getSize(),(*pCloseEntity)[i]->getSize()))
+		{
+
+			pArray[index]->setColisionStatus(true);
+			pArray[index]->sMove.shouldI = false;
+			fprintf(stderr, "OBECT:%i collided with OBJECT:%i\n",index,i);
+			return true;
+
+		}
+
+	}
+
+
+
+/* WORKING CODE FOR OBJECT COLLISTION
+	for(int i =0; i < veArray.size() ; i++) 
+	{
+
+		fprintf(stderr, "--AGAINST: %i\n",i);
+
+	
+
+		if(bounding_box_collision(pArray[index]->getX(),pArray[index]->getY(),pArray[index]->getSize(),pArray[index]->getSize(),
+			veArray[i]->getX(),veArray[i]->getY(),veArray[i]->getSize(),veArray[i]->getSize()))
+		{
+
+			pArray[index]->setColisionStatus(true);
+			pArray[index]->sMove.shouldI = false;
+			fprintf(stderr, "OBECT:%i collided with OBJECT:%i\n",index,i);
+			return true;
+
+		}
+
+	}
+*/
 
 	return false;
 }
@@ -351,6 +409,37 @@ bool scenemanager::bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h
 	// collision
 	return true;
 }
+void scenemanager::updateNearbyObjects(int index)
+{
+
+	//	This function will update nearby objects with collision near the player so that I only have
+	//	to do collision math against a small number. 
+
+		//ONLY CHECK AGAINST OBJECTS within a short distance of the moving object
+
+
+	for(int i = 0; i < veArray.size(); i++)
+	{
+
+		//store pointers to objects within 32 pixels of index
+
+		if(
+			(pArray[index]->getX() - veArray[i]->getX() <= 64 && pArray[index]->getX() - veArray[i]->getX() >= -64) 
+			&&
+			(pArray[index]->getY() - veArray[i]->getY() <= 64 && pArray[index]->getY() - veArray[i]->getY() >= -64)
+		  )
+		{
+
+			pArray[index]->setCloseToPlayer(*(veArray[i]));
+			fprintf(stderr,"Added to close_to_player vector\n");
+
+		}
+		
+
+	}
+
+}
+
 
 
 

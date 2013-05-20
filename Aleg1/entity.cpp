@@ -19,6 +19,26 @@ entity::entity()
 
 
 }
+entity::entity(int xStart,int yStart,int speedStart,int sizeStart)
+{
+	x = xStart;
+	y= yStart;
+
+
+	//SPEED and SIze
+	speed = speedStart;
+	size = sizeStart;
+
+	//Graphic 
+	
+	pBitmapEntity = al_create_bitmap(sizeStart, sizeStart);
+	al_set_target_bitmap(pBitmapEntity);
+	al_clear_to_color(al_map_rgb(255, 0, 0));
+	al_set_target_bitmap(al_get_backbuffer(display));
+
+	describe();
+
+}
 
 entity::~entity()
 {
@@ -68,4 +88,9 @@ void entity::changeColor(int r, int g, int b)
 
 
 
+}
+
+ALLEGRO_BITMAP* entity::getBitmap()
+{
+	return pBitmapEntity;
 }

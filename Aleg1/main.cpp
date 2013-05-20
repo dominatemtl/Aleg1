@@ -16,7 +16,7 @@ int main(int argc, char **argv){
 		return false;
 	}
 
-//Move this font and drawing
+	//Move this font and drawing
 	ALLEGRO_FONT *font_oj18 = NULL; //Pointer to font
 
 	font_oj18 = al_load_ttf_font("orangejuice.ttf",50,0);
@@ -27,9 +27,9 @@ int main(int argc, char **argv){
 
 
 
-  
 
-//CREATE OBJECTS
+
+	//CREATE OBJECTS
 	scenemanager scene1;										//CREATE SCENE
 	player p1;													//CREATE PLAYER
 	player p2(300, 300);										//CREATE PLAYER					
@@ -59,7 +59,7 @@ int main(int argc, char **argv){
 	tile_map_create();
 	player* aP = NULL; // POINTER TO THE ACTIVE PLAYER
 
-	
+
 	al_start_timer(timer);
 	//GAME LOOP
 	while(1)
@@ -77,6 +77,13 @@ int main(int argc, char **argv){
 			if(keys[KEY_SPACE])
 			{
 
+				//PLACEHOLDER
+
+			}
+			if(keys[KEY_N])
+			{
+
+				scene1.addEntity();
 				//PLACEHOLDER
 
 			}
@@ -103,6 +110,9 @@ int main(int argc, char **argv){
 			case ALLEGRO_KEY_SPACE:
 				keys[KEY_SPACE] = true;
 				break;
+			case ALLEGRO_KEY_N:
+				keys[KEY_N] = true;
+				break;
 			}
 		}	   
 		else if(ev.type == ALLEGRO_EVENT_KEY_UP)
@@ -124,13 +134,16 @@ int main(int argc, char **argv){
 			case ALLEGRO_KEY_SPACE:
 				keys[KEY_SPACE] = false;
 				break;
+			case ALLEGRO_KEY_N:
+				keys[KEY_N] = false;
+				break;
 			}
 		}
 
 		else if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
 			break;
 		}
-	
+
 		else if(ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN) // RIGHT CLICK ---- MOVE
 		{
 
@@ -173,7 +186,7 @@ int main(int argc, char **argv){
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
 				//FOR DEBUG
-			//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
+				//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
 
 				int mX, mY;
 
@@ -187,45 +200,45 @@ int main(int argc, char **argv){
 				al_set_target_bitmap(al_get_backbuffer(display));
 
 			}
-			
+
 
 			//ALL of this
 		}
-	
+
 		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
-           /* Left button scrolls. */
-            if (mouse == 1) {
-			
+			/* Left button scrolls. */
+			if (mouse == 1) {
+
 
 				float x = ev.mouse.dx / zoom;
-                float y = ev.mouse.dy / zoom;
-                scroll_x -= x * cos(rotate) + y * sin(rotate);
-                scroll_y -= y * cos(rotate) - x * sin(rotate);
+				float y = ev.mouse.dy / zoom;
+				scroll_x -= x * cos(rotate) + y * sin(rotate);
+				scroll_y -= y * cos(rotate) - x * sin(rotate);
 
-            }
+			}
 
 			//Zoom translation & safeguards
 			zoom += ev.mouse.dz * 0.1;
-            if (zoom < 0.5) zoom = 0.5;
-            if (zoom > 2) zoom = 2;
+			if (zoom < 0.5) zoom = 0.5;
+			if (zoom > 2) zoom = 2;
 
 		}
-	    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
+		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
 		{
-            mouse = 0;
-        }
+			mouse = 0;
+		}
 
 
-        if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
+		if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
 
-            al_acknowledge_resize(display);
+			al_acknowledge_resize(display);
 			SCREEN_W = al_get_display_width(display);
 			SCREEN_H = al_get_display_height(display);
-		
 
-            redraw = true;
-        }
+
+			redraw = true;
+		}
 
 		if(redraw && al_is_event_queue_empty(event_queue)) {
 
@@ -234,10 +247,10 @@ int main(int argc, char **argv){
 			al_clear_to_color(al_map_rgb(0,0,0));
 
 
-			
+
 			scene1.drawScene();
 
-		//	al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
+			//	al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
 
 			al_flip_display();
 		}
