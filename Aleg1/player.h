@@ -14,6 +14,10 @@ protected:
 	MYCLASSES playerClass;
 	std::vector<entity*> close_to_player;
 
+	//	Stores the chunk of the Tile Map that the player object is in
+	int inMapSection;
+
+
 
 public:
 
@@ -25,6 +29,11 @@ public:
 	int getPlayerClass(){return playerClass;};
 	void setCloseToPlayer(entity& e);
 	std::vector<entity*>* getCloseToPlayer();
+
+
+	int getMapSectionLocation(){return inMapSection;};
+	void setMapsectionLocation(int MapSection);	//WIP
+	void cleanCloseToPlayer(){ close_to_player.clear(); }
 
 
 };

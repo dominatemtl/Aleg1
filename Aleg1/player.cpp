@@ -109,3 +109,11 @@ std::vector<entity*>* player::getCloseToPlayer()
 
 	return &close_to_player;
 }
+
+void player::setMapsectionLocation(int MapSection)
+{
+
+	inMapSection = MapSection;
+
+
+}
