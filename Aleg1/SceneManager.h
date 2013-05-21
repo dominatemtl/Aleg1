@@ -27,6 +27,33 @@ private:
 
 	std::vector<player*> vpArray;
 	std::vector<entity*> veArray;
+	std::vector<int> ignore;
+
+	//	Store 800x800 sections of the map
+	//	TOP LAYER
+	std::vector<entity*> Map1;			// X: 0 - 800		: Y: 0 - 800
+	std::vector<entity*> Map2;			// X: 801 - 1600	: Y: 0 - 800
+	std::vector<entity*> Map3;			// X: 1601 - 2000	: Y: 0 - 800
+	std::vector<entity*> Map4;			// X: 2601 - 3200	: Y: 0 - 800
+
+	//	MIDDLE LAYER
+	std::vector<entity*> Map5;			// X: 0 - 800		: Y: 801 - 1600
+	std::vector<entity*> Map6;			// X: 801 - 1600	: Y: 801 - 1600
+	std::vector<entity*> Map7;			// X: 1601 - 2000	: Y: 801 - 1600
+	std::vector<entity*> Map8;			// X: 2601 - 3200	: Y: 801 - 1600
+
+	//	MIDDLE LAYER 2
+	std::vector<entity*> Map9;			// X: 0 - 800		: Y: 1601 - 2200
+	std::vector<entity*> Map10;			// X: 801 - 1600	: Y: 1601 - 2200
+	std::vector<entity*> Map11;			// X: 1601 - 2000	: Y: 1601 - 2200
+	std::vector<entity*> Map12;			// X: 2601 - 3200	: Y: 1601 - 2200
+
+	//	BOTTOM LAYER
+	std::vector<entity*> Map13;			// X: 0 - 800		: Y: 2201 - 3200
+	std::vector<entity*> Map14;			// X: 801 - 1600	: Y: 2201 - 3200
+	std::vector<entity*> Map15;			// X: 1601 - 2000	: Y: 2201 - 3200
+	std::vector<entity*> Map16;			// X: 2601 - 3200	: Y: 2201 - 3200
+
 
 
 protected:

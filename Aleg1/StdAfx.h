@@ -6,6 +6,7 @@
 #include <math.h>
 #include <fstream>
 #include <vector>
+#include <algorithm> // std::find
 
 // ALLEGRO INCLUDES
 #include <allegro5/allegro.h>

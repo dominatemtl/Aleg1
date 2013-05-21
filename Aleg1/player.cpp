@@ -97,7 +97,10 @@ void player::setCloseToPlayer(entity& e)
 	else
 	{
 		close_to_player.push_back(&e);
+
 	}
+
+	//Remove unused elements
 
 }
 

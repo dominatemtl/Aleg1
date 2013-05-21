@@ -72,12 +72,13 @@ void scenemanager::drawScene()
 
 //VECTOR TESTING
 
-	
+
 	for(int i = 0; i < veArray.size() ; i++)
 	{
 			al_draw_bitmap(veArray[i]->getBitmap(), veArray[i]->getX(), veArray[i]->getY(), 0);
 
 	}
+
 	
 	al_identity_transform(&transform);
     al_use_transform(&transform);
@@ -225,13 +226,71 @@ void scenemanager::checkScene(int cX, int cY) //CHECK TO SEE IF USER CLICKED ON 
 
 void scenemanager::addEntity()
 {
-	//Generate random coordinates
+	//	Generate random coordinates
 	int rX = rand() % 3100;
 	int rY = rand() % 3100;
 
-	//Dynamically create new entity
+	//	Dynamically create new entity
+	entity* tempEnt = new entity(rX,rY,0,32);
+	veArray.push_back(tempEnt);
 
-	veArray.push_back(new entity(rX,rY,0,32));
+
+	//	Add new entity to map segments
+//TOP
+	//	MAP-1
+		if(rX < 800 && rY < 800)
+			Map1.push_back(tempEnt);
+	//	MAP-2
+		if(rX > 801	&& rX < 1600 && rY < 800)
+			Map2.push_back(tempEnt);
+	//	MAP-3
+		if(rX > 1601 && rX < 2400 && rY < 800)
+			Map3.push_back(tempEnt);
+	//	MAP-4
+		if(rX > 2401 && rX < 3200 && rY < 800)
+			Map4.push_back(tempEnt);
+//MIDDLE1
+	//	MAP-5
+		if(rX < 800 && rY < 800 && rY > 801 && rY < 1600)
+			Map5.push_back(tempEnt);
+	//	MAP-6
+		if(rX > 801	&& rX < 1600 && rY > 801 && rY < 1600)
+			Map6.push_back(tempEnt);
+	//	MAP-7
+		if(rX > 1601 && rX < 2400 && rY > 801 && rY < 1600)
+			Map7.push_back(tempEnt);
+	//	MAP-8
+		if(rX > 2401 && rX < 3200 && rY > 801 && rY < 1600)
+			Map8.push_back(tempEnt);
+
+//MIDDLE2
+	//	MAP-9
+		if(rX < 800 && rY < 800 && rY > 1601 && rY < 2400)
+			Map9.push_back(tempEnt);
+	//	MAP-10
+		if(rX > 801	&& rX < 1600 && rY > 1601 && rY < 2400)
+			Map10.push_back(tempEnt);
+	//	MAP-11
+		if(rX > 1601 && rX < 2400 && rY > 1601 && rY < 2400)
+			Map11.push_back(tempEnt);
+	//	MAP-12
+		if(rX > 2401 && rX < 3200 && rY > 1601 && rY < 2400)
+			Map12.push_back(tempEnt);
+//BOTTOM
+	//	MAP-13
+		if(rX < 800 && rY < 800 && rY > 2401 && rY < 3200)
+			Map13.push_back(tempEnt);
+	//	MAP-14
+		if(rX > 801	&& rX < 1600 && rY > 2401 && rY < 3200)
+			Map14.push_back(tempEnt);
+	//	MAP-15
+		if(rX > 1601 && rX < 2400 && rY > 2401 && rY < 3200)
+			Map15.push_back(tempEnt);
+	//	MAP-16
+		if(rX > 2401 && rX < 3200 && rY > 2401 && rY < 3200)
+			Map12.push_back(tempEnt);
+
+
 
 }
 bool scenemanager::checkCollision(int index)
@@ -240,12 +299,10 @@ bool scenemanager::checkCollision(int index)
 	//	Terrible spot for this
 	updateNearbyObjects(index);
 
-	//check x,y object against other members of the array
+	//	Player vs. Player collision
 	fprintf(stderr, "CHECK: %i\n",index);
 	for(int i =0; i < pIndex ; i++) 
 	{
-
-
 		fprintf(stderr, "--AGAINST: %i\n",i);
 		if(index == i)
 		{
@@ -254,12 +311,10 @@ bool scenemanager::checkCollision(int index)
 		else if(bounding_box_collision(pArray[index]->getX(),pArray[index]->getY(),pArray[index]->getSize(),pArray[index]->getSize(),
 			pArray[i]->getX(),pArray[i]->getY(),pArray[i]->getSize(),pArray[i]->getSize()))
 		{
-
 			pArray[index]->setColisionStatus(true);
 			pArray[index]->sMove.shouldI = false;
 			fprintf(stderr, "OBECT:%i collided with OBJECT:%i\n",index,i);
 			return true;
-
 		}
 
 	}
@@ -415,28 +470,209 @@ void scenemanager::updateNearbyObjects(int index)
 	//	This function will update nearby objects with collision near the player so that I only have
 	//	to do collision math against a small number. 
 
-		//ONLY CHECK AGAINST OBJECTS within a short distance of the moving object
+	//	ONLY CHECK AGAINST OBJECTS within a short distance of the moving object
+
+	//	Break map into segments so 
+
+//TOP
+	//	MAP-1
+	if(pArray[index]->getX() < 800 && pArray[index]->getY() < 800)
+	{
+		for(int i = 0; i < Map1.size(); i++)
+		{
+			if(
+				(pArray[index]->getX() - Map1[i]->getX() <= 34 && pArray[index]->getX() - Map1[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map1[i]->getY() <= 34 && pArray[index]->getY() - Map1[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map1[i]));
+				//	ignore.push_back(i);
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
+		}
+	}
+			
+	//	MAP-2
+	else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() < 800)
+	{
+		for(int i = 0; i < Map2.size(); i++)
+		{
+			if(
+				(pArray[index]->getX() - Map2[i]->getX() <= 34 && pArray[index]->getX() - Map2[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map2[i]->getY() <= 34 && pArray[index]->getY() - Map2[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map2[i]));
+				//	ignore.push_back(i);
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
+		}
+	}
+	//	MAP-3
+		else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() < 800)
+		{
+			for(int i = 0; i < Map3.size(); i++)
+			{
+			if(
+				(pArray[index]->getX() - Map3[i]->getX() <= 34 && pArray[index]->getX() - Map3[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map3[i]->getY() <= 34 && pArray[index]->getY() - Map3[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map3[i]));
+				//	ignore.push_back(i);
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
+			}
+		}
+	//	MAP-4
+		else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() < 800)
+		{
+			for(int i = 0; i < Map4.size(); i++)
+			{
+			if(
+				(pArray[index]->getX() - Map4[i]->getX() <= 34 && pArray[index]->getX() - Map4[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map4[i]->getY() <= 34 && pArray[index]->getY() - Map4[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map4[i]));
+				//	ignore.push_back(i);
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
+			}
+		}
+//MIDDLE1
+	//	MAP-5
+		else if(pArray[index]->getX() < 800 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
+		{
+			for(int i = 0; i < Map5.size(); i++)
+			{
+			}
+		}
+	//	MAP-6
+		else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
+		{
+			for(int i = 0; i < Map6.size(); i++)
+			{
+			}
+		}
+	//	MAP-7
+		else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
+		{
+			for(int i = 0; i < Map7.size(); i++)
+			{
+			}
+		}
+	//	MAP-8
+		else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
+		{
+			for(int i = 0; i < Map8.size(); i++)
+			{
+			}
+		}
+
+//MIDDLE2
+	//	MAP-9
+		else if(pArray[index]->getX() < 800 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
+		{
+			for(int i = 0; i < Map9.size(); i++)
+			{
+			}
+		}
+	//	MAP-10
+		else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
+		{
+			for(int i = 0; i < Map10.size(); i++)
+			{
+			}
+		}
+	//	MAP-11
+		else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
+		{
+			for(int i = 0; i < Map11.size(); i++)
+			{
+			}
+		}
+	//	MAP-12
+		else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
+		{
+			for(int i = 0; i < Map12.size(); i++)
+			{
+			}
+		}
+//BOTTOM
+	//	MAP-13
+		else if(pArray[index]->getX() < 800 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
+		{
+			for(int i = 0; i < Map13.size(); i++)
+			{
+			}
+		}
+	//	MAP-14
+		else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
+		{
+			for(int i = 0; i < Map14.size(); i++)
+			{
+			}
+		}
+	//	MAP-15
+		else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
+		{
+			for(int i = 0; i < Map15.size(); i++)
+			{
+			}
+		}
+	//	MAP-16
+		else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
+		{
+			for(int i = 0; i < Map16.size(); i++)
+			{
+			}
+		}
 
 
+
+
+
+
+
+
+/* WORKING but sloppy
 	for(int i = 0; i < veArray.size(); i++)
 	{
 
-		//store pointers to objects within 32 pixels of index
-
-		if(
-			(pArray[index]->getX() - veArray[i]->getX() <= 64 && pArray[index]->getX() - veArray[i]->getX() >= -64) 
-			&&
-			(pArray[index]->getY() - veArray[i]->getY() <= 64 && pArray[index]->getY() - veArray[i]->getY() >= -64)
-		  )
+		//	Dont process objects we know are close to us
+		//	-------NOT WORKING-----
+		if(std::find(ignore.begin(), ignore.end(), i) == ignore.end())
 		{
 
-			pArray[index]->setCloseToPlayer(*(veArray[i]));
-			fprintf(stderr,"Added to close_to_player vector\n");
+			if(
+				(pArray[index]->getX() - veArray[i]->getX() <= 34 && pArray[index]->getX() - veArray[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - veArray[i]->getY() <= 34 && pArray[index]->getY() - veArray[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(veArray[i]));
+			//	ignore.push_back(i);
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 
 		}
-		
-
 	}
+*/
 
 }
 
