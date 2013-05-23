@@ -348,7 +348,7 @@ void scenemanager::addEntity()
 		Map15.push_back(tempEnt);
 	//	MAP-16
 	if(rX > 2401 && rX < 3200 && rY > 2401 && rY < 3200)
-		Map12.push_back(tempEnt);
+		Map16.push_back(tempEnt);
 
 
 
@@ -624,6 +624,14 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-6
 	else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 6))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 6\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(6);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map6.size(); i++)
 		{
 			if(
@@ -643,6 +651,14 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-7
 	else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 7))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 7\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(7);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map7.size(); i++)
 		{
 			if(
@@ -662,6 +678,14 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-8
 	else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 801 && pArray[index]->getY() < 1600)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 8))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 8\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(8);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map8.size(); i++)
 		{
 			if(
@@ -683,8 +707,17 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-9
 	else if(pArray[index]->getX() < 800 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 9))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 9\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(9);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map9.size(); i++)
 		{
+
 			if(
 				(pArray[index]->getX() - Map9[i]->getX() <= 34 && pArray[index]->getX() - Map9[i]->getX() >= -34) // X
 				&&
@@ -702,6 +735,14 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-10
 	else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 10))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 10\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(10);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map10.size(); i++)
 		{
 			if(
@@ -720,44 +761,158 @@ void scenemanager::updateNearbyObjects(int index)
 	//	MAP-11
 	else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 11))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 11\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(11);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map11.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map11[i]->getX() <= 34 && pArray[index]->getX() - Map11[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map11[i]->getY() <= 34 && pArray[index]->getY() - Map11[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map11[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 	//	MAP-12
 	else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 1601 && pArray[index]->getY() < 2400)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 12))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 12\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(12);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map12.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map12[i]->getX() <= 34 && pArray[index]->getX() - Map12[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map12[i]->getY() <= 34 && pArray[index]->getY() - Map12[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map12[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 	//BOTTOM
 	//	MAP-13
 	else if(pArray[index]->getX() < 800 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 13))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 13\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(13);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map13.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map13[i]->getX() <= 34 && pArray[index]->getX() - Map13[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map13[i]->getY() <= 34 && pArray[index]->getY() - Map13[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map13[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 	//	MAP-14
 	else if(pArray[index]->getX() > 801	&& pArray[index]->getX() < 1600 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 14))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 14\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(14);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map14.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map14[i]->getX() <= 34 && pArray[index]->getX() - Map14[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map14[i]->getY() <= 34 && pArray[index]->getY() - Map14[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map14[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 	//	MAP-15
 	else if(pArray[index]->getX() > 1601 && pArray[index]->getX() < 2400 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 15))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 15\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(15);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map15.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map15[i]->getX() <= 34 && pArray[index]->getX() - Map15[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map15[i]->getY() <= 34 && pArray[index]->getY() - Map15[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map15[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 	//	MAP-16
 	else if(pArray[index]->getX() > 2401 && pArray[index]->getX() < 3200 && pArray[index]->getY() > 2401 && pArray[index]->getY() < 3200)
 	{
+		//See if we already processed this MAP 800x800 section
+		if(!(pArray[index]->getMapSectionLocation() == 16))	//	If player is new to map chunk
+		{
+			fprintf(stderr,"Clean Close_to_Player and SetMapsectionLocation = 16\n");
+			pArray[index]->cleanCloseToPlayer();
+			pArray[index]->setMapsectionLocation(16);
+		}
+		//	LOOP through entities in the map chunk
 		for(int i = 0; i < Map16.size(); i++)
 		{
+			if(
+				(pArray[index]->getX() - Map16[i]->getX() <= 34 && pArray[index]->getX() - Map16[i]->getX() >= -34) // X
+				&&
+				(pArray[index]->getY() - Map16[i]->getY() <= 34 && pArray[index]->getY() - Map16[i]->getY() >= -34)	// Y
+				)
+			{
+
+				pArray[index]->setCloseToPlayer(*(Map16[i]));
+				fprintf(stderr,"Added to close_to_player vector\n");
+
+			}
 		}
 	}
 

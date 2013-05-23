@@ -3,17 +3,9 @@
  
 
 /* CAMERA SETTINGS */
+//TODO: I create camera class to manage the cameras
 float zoom = 1.0, rotate;
 float scroll_x, scroll_y;
-
-/* Our window. */
-//ALLEGRO_DISPLAY *display;
-/* Our tiles atlas. */
-//ALLEGRO_BITMAP *tiles;
-/* Our icon and font. */
-ALLEGRO_BITMAP *icon;
-
-
 
 
 int tile_map[100][100];

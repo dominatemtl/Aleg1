@@ -28,8 +28,6 @@ protected:
 	int speed;
 	bool colided;
 	
-	
-
 public:
 	Movement sMove;
 
