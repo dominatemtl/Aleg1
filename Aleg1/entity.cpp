@@ -6,7 +6,6 @@ entity::entity()
 	x = 0;
 	y= 0;
 
-
 	//SPEED and SIze
 	speed = 0;
 	size = 32;

@@ -35,6 +35,8 @@ public:
 	entity();
 	entity(int,int,int,int);
 	~entity();
+
+
 	int getX(){return x;};
 	int getY(){return y;};
 	void move(MYMOVEMENT direction);

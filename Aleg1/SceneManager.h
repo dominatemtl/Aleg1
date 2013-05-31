@@ -25,9 +25,13 @@ private:
 	player* pArray[3]; //POINTERS TO PLAYERS
 	entity* eArray[32];//POINTS TO ENTITIES
 
+	//	Store players in scene
 	std::vector<player*> vpArray;
+	//	Store entities in scene
 	std::vector<entity*> veArray;
-	std::vector<int> ignore;
+	//	Store rooms in scene
+	std::vector<room*> roomArray;
+
 
 	//	Store 800x800 sections of the map
 	//	TOP LAYER
@@ -78,13 +82,20 @@ public:
 	void checkScene(int cX,int xY);
 	void sceneMovement();
 
-	//COLLISION
+	//	COLLISION
 	bool checkCollision(int);
 	void updateNearbyObjects(int index);
 	bool bounding_box_collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h);
 
 	void setActivePlayer(int);
 	void moveActivePlayer();
+
+	//	ROOMS
+	void initRoom(int r);
+	void initRoomClear();
+	bool roomOnMouse();
+	void setRoomLocation(int pX, int pY);
+	void drawRooms();
 
 
 

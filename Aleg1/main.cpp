@@ -34,7 +34,7 @@ int main(int argc, char **argv){
 	player p1;													//CREATE PLAYER
 	player p2(300, 300);										//CREATE PLAYER					
 	player p3(332, 332);										//CREATE PLAYER
-	player p4(600, 600, WIZARD);									//CREATE PLAYER
+	player p4(600, 600, WIZARD);								//CREATE PLAYER
 	scene1.addPlayer(p1);										//ADD to SCENE
 	scene1.addPlayer(p2);										//ADD to SCENE
 	scene1.addPlayer(p3);										//ADD to SCENE
@@ -57,9 +57,8 @@ int main(int argc, char **argv){
 
 	al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
 	tile_map_create();
+
 	player* aP = NULL; // POINTER TO THE ACTIVE PLAYER
-
-
 	al_start_timer(timer);
 	//GAME LOOP
 	while(1)
@@ -70,23 +69,27 @@ int main(int argc, char **argv){
 
 		if(ev.type == ALLEGRO_EVENT_TIMER) 
 		{
-			//The scene should handle moving the player.
+			
 
 			scene1.moveActivePlayer(); //Check for keypresses and move player
 
 			if(keys[KEY_SPACE])
 			{
 
-				//PLACEHOLDER
+				//	PLACEHOLDER
 
 			}
 			if(keys[KEY_N])
 			{
-
 				scene1.addEntity();
-				//PLACEHOLDER
-
 			}
+			if(keys[KEY_1])
+			{
+				fprintf(stderr,"Pressed 1\n");
+				scene1.initRoom(HALL);
+				keys[KEY_1] = false;
+			}
+		
 
 			scene1.sceneMovement(); //MOVE PLAYERS
 			redraw = true; 
@@ -137,6 +140,9 @@ int main(int argc, char **argv){
 			case ALLEGRO_KEY_N:
 				keys[KEY_N] = false;
 				break;
+			case ALLEGRO_KEY_1:
+					keys[KEY_1] = true;
+				break;
 			}
 		}
 
@@ -185,6 +191,10 @@ int main(int argc, char **argv){
 			}
 			else if(ev.mouse.button == LEFT_CLICK)										//LEFT CLICK
 			{
+				//	If we have a room on the mouse place it and snap it to grid
+				//	Add the room to the scene to be drawn
+				
+
 				//FOR DEBUG
 				//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
 
@@ -207,6 +217,16 @@ int main(int argc, char **argv){
 
 		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)
 		{
+			//	Check for rooms on mouse
+			//	Draw the room on the mouse, snapping to grid segments
+			if(scene1.roomOnMouse())
+			{
+
+
+				fprintf(stderr,"set room location 1\n");
+				scene1.setRoomLocation(ev.mouse.x, ev.mouse.y);
+			}
+
 			/* Left button scrolls. */
 			if (mouse == 1) {
 
@@ -229,7 +249,7 @@ int main(int argc, char **argv){
 			mouse = 0;
 		}
 
-
+		//	Resize Display
 		if (ev.type == ALLEGRO_EVENT_DISPLAY_RESIZE) {
 
 			al_acknowledge_resize(display);
@@ -239,18 +259,13 @@ int main(int argc, char **argv){
 
 			redraw = true;
 		}
-
+		
 		if(redraw && al_is_event_queue_empty(event_queue)) {
 
 			redraw = false;
-
 			al_clear_to_color(al_map_rgb(0,0,0));
 
-
-
 			scene1.drawScene();
-
-			//	al_draw_text(font_oj18,al_map_rgb(255,255,255),10, 10, ALLEGRO_ALIGN_LEFT, "BBEG GAME - RGL");
 
 			al_flip_display();
 		}

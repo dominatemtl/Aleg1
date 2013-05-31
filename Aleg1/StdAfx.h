@@ -20,6 +20,7 @@
 //MY INCLUDES
 #include "globals.h"
 #include "tilemap.h"
+#include "rooms.h"
 
 
 

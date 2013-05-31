@@ -33,6 +33,9 @@ scenemanager::~scenemanager()
 	size_t sz = veArray.size();
 	for (size_t i = 0; i < sz; ++i)
 		delete veArray[i];
+
+	for (int i = 0; i < roomArray.size(); ++i)
+		delete roomArray[i];
 }
 
 //	Screen drawing functions
@@ -59,6 +62,8 @@ void scenemanager::drawScene()
 	//DRAW MAP
 	tile_map_draw();
 
+	drawRooms();
+
 	for(int i =0; i < pIndex ; i++)
 	{
 		if(pArray[i]->getPlayerClass() == WIZARD)
@@ -82,6 +87,7 @@ void scenemanager::drawScene()
 
 	}
 
+	
 
 	al_identity_transform(&transform);
 	al_use_transform(&transform);
@@ -89,6 +95,7 @@ void scenemanager::drawScene()
 
 	//DRAW Debug information
 	drawDebugUI();
+
 
 }
 void scenemanager::drawDebugUI()
@@ -125,6 +132,20 @@ void scenemanager::drawDebugUI()
 	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 43, ALLEGRO_ALIGN_RIGHT, "Dest-X: %i Dest-Y: %i",pArray[aP_index]->sMove.dest_x,pArray[aP_index]->sMove.dest_y);
 
 	al_draw_textf(font_arial12,al_map_rgb(255,255,255),670 + (SCREEN_W - 680), 56, ALLEGRO_ALIGN_RIGHT, "Zoom Level: %f",zoom);
+}
+void scenemanager::drawRooms()
+{
+	for(int i = 0; i < roomArray.size(); i++)
+	{
+
+		if(roomArray[i]->isOnMouse())
+		{
+			fprintf(stderr,"There is a room on the mouse to draw\n");
+			al_draw_filled_rectangle(roomArray[i]->getX(),roomArray[i]->getY(), 
+				roomArray[i]->getX() + roomArray[i]->getSizeX(), roomArray[i]->getY() + roomArray[i]->getSizeY(), al_map_rgb(255,0,255));
+		}
+	}
+
 }
 
 //	Player movement functions
@@ -263,7 +284,6 @@ player* scenemanager::getPlayer()
 	return pArray[aP_index];
 }
 
-
 //	Scene MENU's and Click checking
 void scenemanager::checkScene(int cX, int cY) //CHECK TO SEE IF USER CLICKED ON A SCENE ELEMENT
 {
@@ -380,8 +400,6 @@ void scenemanager::setActivePlayer(int i)
 	}
 
 }
-
-
 
 //	COLLISION
 bool scenemanager::checkCollision(int index)
@@ -922,6 +940,47 @@ void scenemanager::updateNearbyObjects(int index)
 
 }
 
+//	ROOMS
+void scenemanager::initRoom(int r)
+{
+	fprintf(stderr,"Initialized room 1\n");
+	room* tempRoom = new room(r);
+	roomArray.push_back(tempRoom);
+
+}
+void scenemanager::initRoomClear()
+{
+	fprintf(stderr,"Deleted room 1\n");
+	delete roomArray.back();
+	roomArray.pop_back();
+}
+bool scenemanager::roomOnMouse()
+{
+	for(int i = 0; i < roomArray.size(); i++)
+	{
+
+		if(roomArray[i]->isOnMouse())
+		{
+			return true;
+		}
+	}
+
+	return false;
+
+}
+void scenemanager::setRoomLocation(int pX, int pY)
+{
+
+	for(int i = 0; i < roomArray.size(); i++)
+	{
+
+		if(roomArray[i]->isOnMouse())
+		{
+			roomArray[i]->setLocation(pX,pY);
+		}
+	}
+
+}
 
 
 
