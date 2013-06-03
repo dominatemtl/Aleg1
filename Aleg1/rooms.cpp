@@ -57,3 +57,13 @@ void room::setLocation(float pX, float pY)
 	location_x = pX; 
 	location_y = pY;
 }
+
+void room::rotate()
+{
+
+	int tempX, tempY, tempSizeX, tempSizeY;
+
+
+
+
+}

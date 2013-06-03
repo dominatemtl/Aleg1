@@ -26,9 +26,6 @@ int main(int argc, char **argv){
 	}
 
 
-
-
-
 	//CREATE OBJECTS
 	scenemanager scene1;										//CREATE SCENE
 	player p1;													//CREATE PLAYER
@@ -69,7 +66,6 @@ int main(int argc, char **argv){
 
 		if(ev.type == ALLEGRO_EVENT_TIMER) 
 		{
-			
 
 			scene1.moveActivePlayer(); //Check for keypresses and move player
 
@@ -102,7 +98,7 @@ int main(int argc, char **argv){
 				}
 				keys[KEY_2] = false;
 			}
-		
+
 
 			scene1.sceneMovement(); //MOVE PLAYERS
 			redraw = true; 
@@ -154,10 +150,10 @@ int main(int argc, char **argv){
 				keys[KEY_N] = false;
 				break;
 			case ALLEGRO_KEY_1:
-					keys[KEY_1] = true;
+				keys[KEY_1] = true;
 				break;
 			case ALLEGRO_KEY_2:
-					keys[KEY_2] = true;
+				keys[KEY_2] = true;
 				break;
 			}
 		}
@@ -187,11 +183,9 @@ int main(int argc, char **argv){
 				while(!(aP->sMove.dest_x % aP->getSpeed() == 0))
 				{
 
-
 					fprintf(stderr, "INCREMENT X: %i\n",aP->sMove.dest_x % aP->getSpeed());
 					aP->sMove.dest_x += (aP->sMove.dest_x % aP->getSpeed());
 					fprintf(stderr, "NEW DEST: X:%i Y:%i\n",(int)aP->sMove.dest_x,(int)aP->sMove.dest_y);
-
 
 				}
 				while(!(aP->sMove.dest_y % aP->getSpeed() == 0))
@@ -209,7 +203,7 @@ int main(int argc, char **argv){
 			{
 				//	If we have a room on the mouse place it and snap it to grid
 				//	Add the room to the scene to be drawn
-				
+
 
 				//FOR DEBUG
 				//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
@@ -220,15 +214,14 @@ int main(int argc, char **argv){
 					//	Place the tile
 					scene1.setRoomLocation((ev.mouse.x / zoom) + scroll_x, (ev.mouse.y / zoom) + scroll_y,false);
 				}
+				else
+				{
 
-				int mX, mY;
-				mX = (ev.mouse.x / zoom) + scroll_x;
-				mY = (ev.mouse.y / zoom) + scroll_y;
-				mouse = 1;
-
-				//Check for clicked on elements
-				scene1.checkScene(mX, mY);
-				al_set_target_bitmap(al_get_backbuffer(display));
+					mouse = 1;
+					scene1.checkScene(	(ev.mouse.x / zoom) + scroll_x,
+										(ev.mouse.y / zoom) + scroll_y);
+					al_set_target_bitmap(al_get_backbuffer(display));
+				}
 
 			}
 
@@ -277,7 +270,7 @@ int main(int argc, char **argv){
 
 			redraw = true;
 		}
-		
+
 		if(redraw && al_is_event_queue_empty(event_queue)) {
 
 			redraw = false;
@@ -292,8 +285,6 @@ int main(int argc, char **argv){
 	//clean up 
 	CleanUp();
 	al_destroy_font(font_oj18);
-
-
 
 	return 0;
 }

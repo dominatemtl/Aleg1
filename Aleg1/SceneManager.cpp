@@ -948,7 +948,7 @@ void scenemanager::updateNearbyObjects(int index)
 //	ROOMS
 void scenemanager::initRoom(int r)
 {
-	fprintf(stderr,"Initialized room 1\n");
+	fprintf(stderr,"Initialized room %i\n", r);
 	room* tempRoom = new room(r);
 	roomArray.push_back(tempRoom);
 
@@ -975,27 +975,67 @@ bool scenemanager::roomOnMouse()
 }
 void scenemanager::setRoomLocation(float pX, float pY)
 {
+	//	TODO:	SNAP to other room sections
+	//	TODO:	Prevent room overlap
 
+	//	Snap to grid
+	if((int)pX % 32 || (int)pY % 32)
+	{
+		pX -= ((int)pX % 32);
+		pY -= ((int)pY % 32);
+	}
+	//	Loop through room array selecting only the room onMouse
 	for(int i = 0; i < roomArray.size(); i++)
 	{
 
 		if(roomArray[i]->isOnMouse())
 		{
+
+			//	Center room tile on mouse
+			int tempX, tempY;
+
+			tempX = roomArray[i]->getSizeX() / 2;
+			tempY = roomArray[i]->getSizeY() / 2;
+
+			pX -= tempX;
+			pY -= tempY;
+
 			roomArray[i]->setLocation(pX,pY);
+
 		}
 	}
 
 }
-
 void scenemanager::setRoomLocation(float pX, float pY, bool t)	//	Place tile
 {
+	//	TODO:	SNAP to other room sections
+	//	TODO:	Prevent room overlap
+
+	//	Snap to grid
+	if((int)pX % 32 || (int)pY % 32)
+	{
+		pX -= ((int)pX % 32);
+		pY -= ((int)pY % 32);
+	}
+
+	//	Loop through room array selecting only the room onMouse
 	for(int i = 0; i < roomArray.size(); i++)
 	{
 
 		if(roomArray[i]->isOnMouse())
 		{
+			//	Center room tile on mouse
+			int tempX, tempY;
+
+			tempX = roomArray[i]->getSizeX() / 2;
+			tempY = roomArray[i]->getSizeY() / 2;
+
+			pX -= tempX;
+			pY -= tempY;
+
 			roomArray[i]->setLocation(pX,pY);
 
+			//	Drop room off the mouse and add to the scene
 			if(t == false)
 				roomArray[i]->setOnMouse(false);
 				roomArray[i]->setInScene(true);

@@ -34,6 +34,8 @@ public:
 	int getSizeX(){ return size_x; };
 	int getSizeY(){ return size_y; };
 
+	void rotate();
+
 };
 
 
