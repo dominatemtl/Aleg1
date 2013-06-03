@@ -6,7 +6,7 @@ int SCREEN_W = 680;
 int SCREEN_H = 680;
 
 
-bool keys[] = {false, false, false, false, false,false,false};
+bool keys[] = {false, false, false, false, false,false, false, false};
 
 //ALLEGRO STRUCTS
 ALLEGRO_EVENT_QUEUE *event_queue = NULL;

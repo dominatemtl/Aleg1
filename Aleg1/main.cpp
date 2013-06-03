@@ -75,9 +75,7 @@ int main(int argc, char **argv){
 
 			if(keys[KEY_SPACE])
 			{
-
 				//	PLACEHOLDER
-
 			}
 			if(keys[KEY_N])
 			{
@@ -85,9 +83,24 @@ int main(int argc, char **argv){
 			}
 			if(keys[KEY_1])
 			{
-				fprintf(stderr,"Pressed 1\n");
-				scene1.initRoom(HALL);
+				//	Check for roomOnMouse()
+				if(!(scene1.roomOnMouse()))
+				{
+					fprintf(stderr,"Pressed 1\n");
+					scene1.initRoom(HALL);
+					keys[KEY_1] = false;
+				}
 				keys[KEY_1] = false;
+			}
+			if(keys[KEY_2])
+			{
+				//	Check for roomOnMouse()
+				if(!(scene1.roomOnMouse()))
+				{
+					scene1.initRoom(EMPTYROOM);
+					keys[KEY_2] = false;
+				}
+				keys[KEY_2] = false;
 			}
 		
 
@@ -142,6 +155,9 @@ int main(int argc, char **argv){
 				break;
 			case ALLEGRO_KEY_1:
 					keys[KEY_1] = true;
+				break;
+			case ALLEGRO_KEY_2:
+					keys[KEY_2] = true;
 				break;
 			}
 		}
@@ -198,11 +214,16 @@ int main(int argc, char **argv){
 				//FOR DEBUG
 				//	fprintf(stderr, "BEFORE TRANSLATION: X:%i, Y:%i\n",ev.mouse.x, ev.mouse.y);
 
-				int mX, mY;
 
+				if(scene1.roomOnMouse())
+				{
+					//	Place the tile
+					scene1.setRoomLocation((ev.mouse.x / zoom) + scroll_x, (ev.mouse.y / zoom) + scroll_y,false);
+				}
+
+				int mX, mY;
 				mX = (ev.mouse.x / zoom) + scroll_x;
 				mY = (ev.mouse.y / zoom) + scroll_y;
-
 				mouse = 1;
 
 				//Check for clicked on elements
@@ -214,17 +235,14 @@ int main(int argc, char **argv){
 
 			//ALL of this
 		}
-
-		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)
+		//	Mouse movement
+		else if(ev.type == ALLEGRO_EVENT_MOUSE_AXES)	
 		{
 			//	Check for rooms on mouse
 			//	Draw the room on the mouse, snapping to grid segments
 			if(scene1.roomOnMouse())
 			{
-
-
-				fprintf(stderr,"set room location 1\n");
-				scene1.setRoomLocation(ev.mouse.x, ev.mouse.y);
+				scene1.setRoomLocation((ev.mouse.x / zoom) + scroll_x, (ev.mouse.y / zoom) + scroll_y);
 			}
 
 			/* Left button scrolls. */
@@ -243,7 +261,7 @@ int main(int argc, char **argv){
 			if (zoom < 0.5) zoom = 0.5;
 			if (zoom > 2) zoom = 2;
 
-		}
+		}	//
 		else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP) 
 		{
 			mouse = 0;

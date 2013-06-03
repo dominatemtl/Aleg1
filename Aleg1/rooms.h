@@ -2,7 +2,7 @@
 #define ROOMS_H
 #include "StdAfx.h"
 
-enum GOBLINROOMS {HALL, EMPTYROOM};
+enum GOBLINROOMS {HALL, EMPTYROOM, TREASUREROOM, TORTUREROOM};
 
 class room
 {
@@ -22,13 +22,18 @@ public:
 	//	Decontructor
 	~room();
 	bool isOnMouse(){return onMouse;};
+	void setOnMouse(bool t){ onMouse = t;}
+	bool isInScene(){return inScene;};
+	void setInScene(bool t){ inScene = t;}
+
 	void drawRoom();
-	void setLocation(int pX, int pY){ pX = location_x; pY = location_y; };
+	void setLocation(float pX, float pY);
 
 	int getX(){ return location_x; };
 	int getY(){ return location_y; };
 	int getSizeX(){ return size_x; };
 	int getSizeY(){ return size_y; };
+
 };
 
 

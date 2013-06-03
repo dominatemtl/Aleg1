@@ -41,6 +41,7 @@ scenemanager::~scenemanager()
 //	Screen drawing functions
 void scenemanager::drawScene()
 {
+
 	al_clear_to_color(al_map_rgb(0, 0, 0));
 
 	//CAMERA CONSTRAINTS
@@ -53,6 +54,8 @@ void scenemanager::drawScene()
 	if(scroll_y + (SCREEN_H / zoom)  > 3200 )
 		scroll_y = 3200 - (SCREEN_H / zoom);
 
+	
+
 	//CAMERA SCALE AND TRANSLATE
 	al_identity_transform(&transform);
 	al_translate_transform(&transform, -scroll_x, -scroll_y);
@@ -61,8 +64,8 @@ void scenemanager::drawScene()
 
 	//DRAW MAP
 	tile_map_draw();
-
 	drawRooms();
+	
 
 	for(int i =0; i < pIndex ; i++)
 	{
@@ -91,7 +94,6 @@ void scenemanager::drawScene()
 
 	al_identity_transform(&transform);
 	al_use_transform(&transform);
-
 
 	//DRAW Debug information
 	drawDebugUI();
@@ -140,10 +142,13 @@ void scenemanager::drawRooms()
 
 		if(roomArray[i]->isOnMouse())
 		{
-			fprintf(stderr,"There is a room on the mouse to draw\n");
-			al_draw_filled_rectangle(roomArray[i]->getX(),roomArray[i]->getY(), 
-				roomArray[i]->getX() + roomArray[i]->getSizeX(), roomArray[i]->getY() + roomArray[i]->getSizeY(), al_map_rgb(255,0,255));
+			roomArray[i]->drawRoom();
 		}
+		if(roomArray[i]->isInScene())
+		{
+			roomArray[i]->drawRoom();
+		}
+
 	}
 
 }
@@ -968,7 +973,7 @@ bool scenemanager::roomOnMouse()
 	return false;
 
 }
-void scenemanager::setRoomLocation(int pX, int pY)
+void scenemanager::setRoomLocation(float pX, float pY)
 {
 
 	for(int i = 0; i < roomArray.size(); i++)
@@ -977,6 +982,23 @@ void scenemanager::setRoomLocation(int pX, int pY)
 		if(roomArray[i]->isOnMouse())
 		{
 			roomArray[i]->setLocation(pX,pY);
+		}
+	}
+
+}
+
+void scenemanager::setRoomLocation(float pX, float pY, bool t)	//	Place tile
+{
+	for(int i = 0; i < roomArray.size(); i++)
+	{
+
+		if(roomArray[i]->isOnMouse())
+		{
+			roomArray[i]->setLocation(pX,pY);
+
+			if(t == false)
+				roomArray[i]->setOnMouse(false);
+				roomArray[i]->setInScene(true);
 		}
 	}
 

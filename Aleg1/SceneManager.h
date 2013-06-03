@@ -94,7 +94,8 @@ public:
 	void initRoom(int r);
 	void initRoomClear();
 	bool roomOnMouse();
-	void setRoomLocation(int pX, int pY);
+	void setRoomLocation(float pX, float pY);	//	Follow the mouse
+	void setRoomLocation(float pX, float pY, bool t);	//	Place tile
 	void drawRooms();
 
 
